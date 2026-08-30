@@ -2,188 +2,122 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0,
-               viewport-fit=cover">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI Golf Coach</title>
 
 <style>
-* {
-    box-sizing: border-box;
+body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial;
+    background:#101418;
+    color:white;
 }
 
-body {
-    margin: 0;
-    background: #101418;
-    color: white;
-    font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Helvetica Neue",
-        Arial,
-        sans-serif;
+header{
+    text-align:center;
+    padding:20px 10px;
 }
 
-header {
-    text-align: center;
-    padding: 18px 12px 10px;
+h1{
+    margin:0;
+    font-size:25px;
 }
 
-h1 {
-    margin: 0;
-    font-size: 24px;
+.subtitle{
+    color:#aaa;
+    font-size:13px;
+    margin-top:5px;
 }
 
-.subtitle {
-    color: #aeb7c2;
-    font-size: 12px;
-    margin-top: 5px;
+.container{
+    max-width:700px;
+    margin:auto;
+    padding:10px 15px 30px;
 }
 
-.container {
-    max-width: 720px;
-    margin: auto;
-    padding: 8px 14px 30px;
+.card{
+    background:#1b2229;
+    border-radius:18px;
+    padding:15px;
+    margin-bottom:15px;
 }
 
-.card {
-    background: #1b2229;
-    border-radius: 18px;
-    padding: 15px;
-    margin: 10px 0;
+h2{
+    font-size:18px;
+    margin-top:0;
 }
 
-h2 {
-    font-size: 17px;
-    margin: 5px 0 12px;
+button{
+    width:100%;
+    padding:14px;
+    margin-top:8px;
+    border:0;
+    border-radius:12px;
+    background:#2f7df6;
+    color:white;
+    font-size:16px;
+    font-weight:bold;
 }
 
-.badge {
-    display: inline-block;
-    background: #26384d;
-    color: #9fc7ff;
-    border-radius: 20px;
-    padding: 5px 10px;
-    font-size: 11px;
-    margin-bottom: 8px;
+button:disabled{
+    opacity:.4;
 }
 
-.video-area {
-    position: relative;
-    width: 100%;
-    background: black;
-    border-radius: 14px;
-    overflow: hidden;
+video{
+    width:100%;
+    border-radius:14px;
+    background:black;
 }
 
-video {
-    width: 100%;
-    display: block;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
+input,select{
+    width:100%;
+    padding:12px;
+    margin-top:6px;
+    border-radius:10px;
+    border:0;
+    font-size:16px;
 }
 
-canvas {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
+.result{
+    text-align:center;
+    font-size:38px;
+    font-weight:bold;
+    margin:15px 0;
 }
 
-.row {
-    display: flex;
-    gap: 8px;
-    margin-top: 10px;
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
 }
 
-button {
-    flex: 1;
-    border: none;
-    border-radius: 12px;
-    padding: 13px 8px;
-    font-size: 15px;
-    font-weight: bold;
-    color: white;
-    background: #2f7df6;
+.stat{
+    background:#252e37;
+    border-radius:12px;
+    padding:12px 5px;
+    text-align:center;
 }
 
-button.secondary {
-    background: #303942;
+.number{
+    font-size:22px;
+    font-weight:bold;
 }
 
-button.danger {
-    background: #c73a45;
+.small{
+    font-size:11px;
+    color:#aaa;
 }
 
-button:disabled {
-    opacity: 0.4;
+.note{
+    color:#aaa;
+    font-size:12px;
+    line-height:1.6;
 }
 
-label {
-    display: block;
-    color: #b9c2cc;
-    font-size: 12px;
-    margin: 10px 0 5px;
-}
-
-input,
-select {
-    width: 100%;
-    padding: 12px;
-    border-radius: 11px;
-    border: none;
-    font-size: 16px;
-}
-
-.result {
-    text-align: center;
-    font-size: 34px;
-    font-weight: bold;
-    padding: 15px 0;
-}
-
-.stats {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-}
-
-.stat {
-    background: #252e37;
-    border-radius: 13px;
-    text-align: center;
-    padding: 12px 5px;
-}
-
-.number {
-    font-size: 23px;
-    font-weight: bold;
-}
-
-.unit {
-    font-size: 10px;
-    color: #aeb7c2;
-}
-
-.note {
-    color: #aeb7c2;
-    font-size: 12px;
-    line-height: 1.6;
-}
-
-.advice {
-    white-space: pre-line;
-    line-height: 1.7;
-    font-size: 14px;
-}
-
-#log {
-    white-space: pre-line;
-    color: #c6ced6;
-    font-size: 13px;
+#aiMessage{
+    white-space:pre-line;
+    line-height:1.7;
+    margin-top:12px;
 }
 </style>
 </head>
@@ -191,71 +125,52 @@ select {
 <body>
 
 <header>
-    <h1>🏌️ AI Golf Coach</h1>
-    <div class="subtitle">
-        練習場用・スイング＆飛距離チェック
-    </div>
+<h1>🏌️ AI Golf Coach</h1>
+<div class="subtitle">
+練習場用 スイング＆飛距離チェック
+</div>
 </header>
 
 <div class="container">
 
 <!-- カメラ -->
+
 <div class="card">
 
-    <span class="badge">STEP 1</span>
+<h2>📷 スイング撮影</h2>
 
-    <h2>📷 スイング撮影</h2>
+<video
+id="video"
+autoplay
+playsinline
+muted>
+</video>
 
-    <div class="video-area">
+<button id="startCamera">
+📷 カメラを開始
+</button>
 
-        <video
-            id="video"
-            autoplay
-            muted
-            playsinline>
-        </video>
-
-        <canvas id="canvas"></canvas>
-
-    </div>
-
-    <div class="row">
-
-        <button id="startCamera">
-            📷 カメラ開始
-        </button>
-
-        <button
-            id="stopCamera"
-            class="danger"
-            disabled>
-            停止
-        </button>
-
-    </div>
+<button id="stopCamera" disabled>
+⛔ カメラ停止
+</button>
 
 </div>
 
 
-<!-- AI解析 -->
+<!-- AI -->
 
 <div class="card">
 
-    <span class="badge">STEP 2</span>
+<h2>🤖 AIフォーム解析</h2>
 
-    <h2>🤖 AIフォーム解析</h2>
+<button id="aiButton">
+AI解析開始
+</button>
 
-    <button id="aiButton">
-        AI解析開始
-    </button>
-
-    <div
-        id="aiMessage"
-        class="advice"
-        style="margin-top:12px;">
-        カメラを開始してから
-        「AI解析開始」を押してください。
-    </div>
+<div id="aiMessage">
+カメラを開始してから
+AI解析を押してください。
+</div>
 
 </div>
 
@@ -264,24 +179,22 @@ select {
 
 <div class="card">
 
-    <span class="badge">STEP 3</span>
+<h2>⛳ クラブ</h2>
 
-    <h2>⛳ クラブ</h2>
+<select id="club">
 
-    <select id="club">
+<option>ドライバー</option>
+<option>3W</option>
+<option>5W</option>
+<option>5番アイアン</option>
+<option>6番アイアン</option>
+<option selected>7番アイアン</option>
+<option>8番アイアン</option>
+<option>9番アイアン</option>
+<option>PW</option>
+<option>SW</option>
 
-        <option>ドライバー</option>
-        <option>3W</option>
-        <option>5W</option>
-        <option>5番アイアン</option>
-        <option>6番アイアン</option>
-        <option selected>7番アイアン</option>
-        <option>8番アイアン</option>
-        <option>9番アイアン</option>
-        <option>PW</option>
-        <option>SW</option>
-
-    </select>
+</select>
 
 </div>
 
@@ -290,77 +203,72 @@ select {
 
 <div class="card">
 
-    <span class="badge">STEP 4</span>
+<h2>📏 飛距離</h2>
 
-    <h2>📏 飛距離</h2>
+<p>
+ボールが落ちた距離を入力してください
+</p>
 
-    <label>
-        ボールが落ちた場所の距離
-    </label>
+<input
+id="distance"
+type="number"
+placeholder="例：150">
 
-    <input
-        id="distanceInput"
-        type="number"
-        placeholder="例：150"
-        step="1">
+<button id="save">
+飛距離を記録
+</button>
 
-    <button
-        id="saveDistance"
-        style="width:100%; margin-top:10px;">
-        飛距離を記録
-    </button>
+<div
+id="result"
+class="result">
+--- yd
+</div>
 
-    <div
-        id="result"
-        class="result">
-        --- yd
-    </div>
+<div class="stats">
 
-    <div class="stats">
+<div class="stat">
 
-        <div class="stat">
+<div
+id="best"
+class="number">
+--
+</div>
 
-            <div
-                id="best"
-                class="number">
-                --
-            </div>
+<div class="small">
+最高飛距離
+</div>
 
-            <div class="unit">
-                最高飛距離 yd
-            </div>
+</div>
 
-        </div>
+<div class="stat">
 
-        <div class="stat">
+<div
+id="average"
+class="number">
+--
+</div>
 
-            <div
-                id="average"
-                class="number">
-                --
-            </div>
+<div class="small">
+平均飛距離
+</div>
 
-            <div class="unit">
-                平均飛距離 yd
-            </div>
+</div>
 
-        </div>
+<div class="stat">
 
-        <div class="stat">
+<div
+id="count"
+class="number">
+0
+</div>
 
-            <div
-                id="count"
-                class="number">
-                0
-            </div>
+<div class="small">
+記録球数
+</div>
 
-            <div class="unit">
-                記録球数
-            </div>
+</div>
 
-        </div>
-
-    </div>
+</div>
 
 </div>
 
@@ -369,194 +277,131 @@ select {
 
 <div class="card">
 
-    <h2>📋 今日の記録</h2>
+<h2>📋 今日の記録</h2>
 
-    <div id="log">
-        まだ記録がありません。
-    </div>
+<div id="log">
+まだ記録がありません。
+</div>
 
 </div>
 
 
 <div class="card">
 
-    <div class="note">
+<div class="note">
 
-        ※現在は試作版です。<br>
-        AI骨格検出によるフォーム確認と
-        飛距離記録を中心にしています。<br>
-        カメラだけから得られる飛距離は
-        正確な実測値ではありません。
+このアプリは試作版です。<br><br>
 
-    </div>
+AIフォーム解析では、カメラ映像から
+人体の姿勢を検出する機能を搭載予定です。<br><br>
+
+飛距離については、現在は入力方式です。
+今後、練習場の距離表示とカメラ映像を利用して
+自動推定する機能へ発展させます。
 
 </div>
 
 </div>
 
-
-<!-- MediaPipe AI -->
-
-<script type="module">
-
-import {
-    FilesetResolver,
-    PoseLandmarker
-}
-from
-"https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22/+esm";
+</div>
 
 
-const video =
-    document.getElementById("video");
-
-const canvas =
-    document.getElementById("canvas");
-
-const ctx =
-    canvas.getContext("2d");
-
-
-const startCamera =
-    document.getElementById("startCamera");
-
-const stopCamera =
-    document.getElementById("stopCamera");
-
-const aiButton =
-    document.getElementById("aiButton");
-
-const aiMessage =
-    document.getElementById("aiMessage");
-
+<script>
 
 let stream = null;
 
-let poseLandmarker = null;
-
-let animationId = null;
-
-
-/* ---------------------------
-   飛距離記録
---------------------------- */
-
 let distances =
-    JSON.parse(
-        localStorage.getItem(
-            "golfDistances"
-        ) || "[]"
-    );
+JSON.parse(
+localStorage.getItem("golfDistances") || "[]"
+);
 
 
-function updateStats() {
+/* -----------------
+   統計表示
+----------------- */
 
-    const count =
-        document.getElementById("count");
+function updateStats(){
 
-    const best =
-        document.getElementById("best");
+    document.getElementById("count")
+    .textContent =
+    distances.length;
 
-    const average =
-        document.getElementById("average");
+    if(distances.length === 0){
 
-    const log =
-        document.getElementById("log");
+        document.getElementById("best")
+        .textContent="--";
 
+        document.getElementById("average")
+        .textContent="--";
 
-    count.textContent =
-        distances.length;
-
-
-    if (distances.length === 0) {
-
-        best.textContent = "--";
-
-        average.textContent = "--";
-
-        log.textContent =
-            "まだ記録がありません。";
+        document.getElementById("log")
+        .textContent=
+        "まだ記録がありません。";
 
         return;
     }
 
+    const best =
+    Math.max(...distances);
 
-    best.textContent =
-        Math.max(...distances);
+    const average =
+    distances.reduce(
+        (a,b)=>a+b,0
+    ) / distances.length;
 
+    document.getElementById("best")
+    .textContent=best;
 
-    const avg =
-        distances.reduce(
-            (a, b) => a + b,
-            0
-        ) / distances.length;
+    document.getElementById("average")
+    .textContent=
+    Math.round(average);
 
-
-    average.textContent =
-        Math.round(avg);
-
-
-    log.textContent =
-        distances
-        .map(
-            (d, i) =>
-                `${i + 1}球目　${d} yd`
-        )
-        .join("\n");
+    document.getElementById("log")
+    .textContent =
+    distances
+    .map(
+        (d,i)=>
+        `${i+1}球目　${d} yd`
+    )
+    .join("\n");
 }
-
 
 updateStats();
 
 
-/* ---------------------------
+/* -----------------
    カメラ開始
---------------------------- */
+----------------- */
 
-startCamera.onclick =
-async function () {
+document
+.getElementById("startCamera")
+.onclick =
+async function(){
 
-    try {
+    try{
 
         stream =
-            await navigator.mediaDevices
-            .getUserMedia({
+        await navigator.mediaDevices
+        .getUserMedia({
 
-                video: {
+            video:{
+                facingMode:"environment"
+            },
 
-                    facingMode:
-                        "environment"
+            audio:false
 
-                },
+        });
 
-                audio: false
+        document
+        .getElementById("video")
+        .srcObject=stream;
 
-            });
-
-
-        video.srcObject =
-            stream;
-
-
-        await video.play();
-
-
-        startCamera.disabled =
-            true;
-
-        stopCamera.disabled =
-            false;
-
-
-        resizeCanvas();
-
-
-    } catch (error) {
+    }
+    catch(error){
 
         alert(
-            "カメラを使用できません。\n\n" +
-            "iPhoneの設定から、このWEBアプリの" +
-            "カメラ使用を許可してください。"
+        "カメラを起動できません。\n\n"+
+        "Safariのカメラ許可を確認してください。"
         );
 
     }
@@ -564,404 +409,115 @@ async function () {
 };
 
 
-/* ---------------------------
+/* -----------------
    カメラ停止
---------------------------- */
+----------------- */
 
-stopCamera.onclick =
-function () {
+document
+.getElementById("stopCamera")
+.onclick =
+function(){
 
-    if (stream) {
+    if(stream){
 
         stream
         .getTracks()
         .forEach(
-            track =>
-                track.stop()
+            track=>track.stop()
         );
 
+        stream=null;
+
+        document
+        .getElementById("video")
+        .srcObject=null;
     }
-
-
-    stream = null;
-
-    video.srcObject = null;
-
-
-    startCamera.disabled =
-        false;
-
-    stopCamera.disabled =
-        true;
-
-
-    cancelAnimationFrame(
-        animationId
-    );
 
 };
 
 
-/* ---------------------------
-   Canvasサイズ
---------------------------- */
-
-function resizeCanvas() {
-
-    canvas.width =
-        video.videoWidth ||
-        640;
-
-    canvas.height =
-        video.videoHeight ||
-        360;
-
-}
-
-
-video.onloadedmetadata =
-resizeCanvas;
-
-
-/* ---------------------------
-   AIモデル読み込み
---------------------------- */
-
-async function loadAI() {
-
-    if (poseLandmarker) {
-
-        return;
-
-    }
-
-
-    aiMessage.textContent =
-        "AIモデルを読み込んでいます…";
-
-
-    const vision =
-        await FilesetResolver
-        .forVisionTasks(
-            "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22/wasm"
-        );
-
-
-    poseLandmarker =
-        await PoseLandmarker
-        .createFromOptions(
-            vision,
-            {
-
-                baseOptions: {
-
-                    modelAssetPath:
-                    "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task"
-
-                },
-
-                runningMode:
-                    "VIDEO",
-
-                numPoses:
-                    1
-
-            }
-        );
-
-}
-
-
-/* ---------------------------
-   AI骨格描画
---------------------------- */
-
-function drawPose() {
-
-    if (!poseLandmarker) {
-
-        return;
-
-    }
-
-
-    if (video.readyState < 2) {
-
-        animationId =
-            requestAnimationFrame(
-                drawPose
-            );
-
-        return;
-
-    }
-
-
-    const result =
-        poseLandmarker
-        .detectForVideo(
-            video,
-            performance.now()
-        );
-
-
-    ctx.clearRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-    );
-
-
-    if (
-        result.landmarks &&
-        result.landmarks.length
-    ) {
-
-        const points =
-            result.landmarks[0];
-
-
-        const connections = [
-
-            [11,12],
-
-            [11,23],
-
-            [12,24],
-
-            [23,24],
-
-            [11,13],
-
-            [13,15],
-
-            [12,14],
-
-            [14,16],
-
-            [23,25],
-
-            [25,27],
-
-            [24,26],
-
-            [26,28]
-
-        ];
-
-
-        ctx.lineWidth = 4;
-
-        ctx.strokeStyle =
-            "#00e5ff";
-
-        ctx.fillStyle =
-            "#ffffff";
-
-
-        connections.forEach(
-            ([a,b]) => {
-
-                if (
-                    points[a] &&
-                    points[b]
-                ) {
-
-                    ctx.beginPath();
-
-                    ctx.moveTo(
-                        points[a].x *
-                        canvas.width,
-
-                        points[a].y *
-                        canvas.height
-                    );
-
-                    ctx.lineTo(
-                        points[b].x *
-                        canvas.width,
-
-                        points[b].y *
-                        canvas.height
-                    );
-
-                    ctx.stroke();
-
-                }
-
-            }
-        );
-
-
-        points.forEach(
-            point => {
-
-                if (
-                    point.visibility >
-                    0.5
-                ) {
-
-                    ctx.beginPath();
-
-                    ctx.arc(
-
-                        point.x *
-                        canvas.width,
-
-                        point.y *
-                        canvas.height,
-
-                        5,
-
-                        0,
-
-                        Math.PI * 2
-
-                    );
-
-                    ctx.fill();
-
-                }
-
-            }
-        );
-
-    }
-
-
-    animationId =
-        requestAnimationFrame(
-            drawPose
-        );
-
-}
-
-
-/* ---------------------------
+/* -----------------
    AIボタン
---------------------------- */
-
-aiButton.onclick =
-async function () {
-
-    try {
-
-        await loadAI();
-
-
-        cancelAnimationFrame(
-            animationId
-        );
-
-
-        drawPose();
-
-
-        aiMessage.textContent =
-`AI骨格検出を開始しました。
-
-画面上に、
-
-・頭
-・肩
-・肘
-・手
-・腰
-・膝
-・足
-
-などの位置を表示しています。
-
-次の段階では、
-
-「アドレス」
-「トップ」
-「インパクト」
-「フィニッシュ」
-
-を自動判定できるように発展させられます。`;
-
-
-    } catch (error) {
-
-        console.error(error);
-
-
-        aiMessage.textContent =
-            "AIモデルを読み込めませんでした。\n" +
-            "インターネット接続を確認してください。";
-
-    }
-
-};
-
-
-/* ---------------------------
-   飛距離記録
---------------------------- */
+----------------- */
 
 document
-.getElementById("saveDistance")
+.getElementById("aiButton")
 .onclick =
-function () {
+function(){
+
+    const message =
+    document.getElementById("aiMessage");
+
+    message.textContent =
+`AIフォーム解析の試作モードです。
+
+今後この部分に、
+
+● 頭の位置
+● 肩のライン
+● 腰のライン
+● 膝の位置
+● アドレス
+● トップ
+● インパクト
+● フィニッシュ
+
+をAIで解析する機能を追加します。
+
+さらに、
+
+「頭が動いています」
+「トップで体が起きています」
+「インパクトで腰の回転が不足しています」
+
+などのAIコーチングへ発展できます。`;
+
+};
+
+
+/* -----------------
+   飛距離保存
+----------------- */
+
+document
+.getElementById("save")
+.onclick =
+function(){
 
     const input =
-        document.getElementById(
-            "distanceInput"
-        );
-
+    document.getElementById("distance");
 
     const value =
-        parseFloat(
-            input.value
-        );
+    Number(input.value);
 
-
-    if (
-        !Number.isFinite(value) ||
-        value <= 0
-    ) {
+    if(!value || value<=0){
 
         alert(
-            "飛距離を入力してください。"
+        "飛距離を入力してください。"
         );
 
         return;
-
     }
 
-
-    const distance =
-        Math.round(value);
-
-
     distances.push(
-        distance
+        Math.round(value)
     );
-
 
     localStorage.setItem(
         "golfDistances",
-        JSON.stringify(
-            distances
-        )
+        JSON.stringify(distances)
     );
 
-
-    document.getElementById(
-        "result"
-    ).textContent =
-        distance + " yd";
-
+    document
+    .getElementById("result")
+    .textContent =
+    Math.round(value)+" yd";
 
     updateStats();
 
-
-    input.value = "";
+    input.value="";
 
 };
-
 
 </script>
 
